@@ -1,3 +1,5 @@
 venv/
 .idea/
 __pycache__/
+app/emails.txt
+app/logs.txt

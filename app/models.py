@@ -1,4 +1,10 @@
 import re
+import os
+
+
+# Exception for work method
+class UnableToWorkException(Exception):
+    pass
 
 
 # Class for mixin email field
@@ -17,10 +23,20 @@ class EmailMixin:
 
 
 class Employee(EmailMixin):
+    emails = []
 
     def __init__(self, name, email, salary_per_day):
+        if not os.path.exists("emails.txt"):
+            with open("emails.txt", "w") as f:
+                pass
+        with open("emails.txt", "r+") as f:
+            emails = [item for item in f.readlines()]
+            if email + "\n" in emails:
+                raise ValueError("Email already exists")
+            else:
+                super().__init__(email)
+                f.write(email + "\n")
         self.name = name
-        super().__init__(email)
         try:
             self.salary_per_day = float(salary_per_day)
         except TypeError:
@@ -64,6 +80,9 @@ class Candidate(EmailMixin):
 
     def __str__(self):
         return self.full_name
+
+    def work(self):
+        raise UnableToWorkException("I'm not hired yet, lol.")
 
 
 class Vacancy(object):
