@@ -29,18 +29,19 @@ class Employee(EmailMixin):
         if not os.path.exists("emails.txt"):
             with open("emails.txt", "w") as f:
                 pass
-        with open("emails.txt", "r+") as f:
-            emails = [item for item in f.readlines()]
-            if email + "\n" in emails:
-                raise ValueError("Email already exists")
-            else:
-                super().__init__(email)
-                f.write(email + "\n")
         self.name = name
         try:
             self.salary_per_day = float(salary_per_day)
         except TypeError:
             print("Incorrect salary")
+        else:
+            with open("emails.txt", "r+") as f:
+                emails = [item for item in f.readlines()]
+                if email + "\n" in emails:
+                    raise ValueError("Email already exists")
+                else:
+                    super().__init__(email)
+                    f.write(email + "\n")
 
     def work(self):
        return "I come to the office."
